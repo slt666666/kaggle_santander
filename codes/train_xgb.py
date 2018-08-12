@@ -9,12 +9,14 @@ from sklearn.model_selection import ParameterGrid, train_test_split
 from sklearn.preprocessing import RobustScaler
 import xgboost as xgb
 
+from logging import StreamHandler, DEBUG, Formatter, FileHandler, getLogger
+
 import warnings
 warnings.filterwarnings('ignore')
 
 
 # A function to calculate Root Mean Squared Logarithmic Error (RMSLE)
-def rmsle(y, y_pred):
+def rmsle(y_pred, y):
     assert len(y) == len(y_pred)
     terms_to_sum = [(math.log(y_pred[i] + 1) - math.log(y[i] + 1)) ** 2.0 for i, pred in enumerate(y_pred)]
     return (sum(terms_to_sum) * (1.0 / len(y))) ** 0.5
@@ -101,9 +103,11 @@ print("Test set size: {}".format(test_df.shape))
 
 # Build Train and Test data
 X_train = train_df.drop(["ID", "target"], axis=1)
+X_train = X_train.T
 y_train = np.log1p(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
+X_test = X_test.T
 
 all_params = {'max_depth': [3, 10],
             'learning_rate': [0.1],
@@ -130,12 +134,12 @@ for params in tqdm(list(ParameterGrid(all_params))):
             dev_y,
             eval_set=[(val_X, val_y)],
             early_stopping_rounds=100,
-            eval_metric='rmse'
+            eval_metric=rmsle
             )
 
     pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)
     print(pred.shape)
-    sc_rmsle = rmsle(val_y, pred)
+    sc_rmsle = rmsle(pred, val_y)
 
     list_rmsle_score.append(sc_rmsle)
 
