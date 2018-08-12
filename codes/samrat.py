@@ -188,6 +188,20 @@ cd_model.fit(dev_X, dev_y,
 
 pred_test_cat = np.expm1(cb_model.predict(X_test))
 
+# Combine Predictions
+sub = pd.read_csv('../input/sample_submission.csv')
 
+sub_lgb = pd.DataFrame()
+sub_lgb["target"] = pred_test
 
-	
+sub_xgb = pd.DataFrame()
+sub_xgb["target"] = pred_test_xgb
+
+sub_cat = pd.DataFrame()
+sub_cat["target"] = pred_test_cat
+
+sub["target"] = (sub_lgb["target"] * 0.5 + sub_xgb["target"] * 0.3 + sub_cat["target"] * 0.2)
+
+print(sub.head())
+sub.to_csv('sub_lgb_xgb_cat.csv', index=False)
+
