@@ -5,7 +5,7 @@ import math
 from tqdm import tqdm
 
 from sklearn import model_selection
-from sklearn.model_selection import ParameterGrid, StratifiedKFold
+from sklearn.model_selection import ParameterGrid, train_test_split
 from sklearn.preprocessing import RobustScaler
 import xgboost as xgb
 
@@ -105,8 +105,6 @@ y_train = np.log1p(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
 
-cv = StratifiedKFold(n_splits=5, shuffle=True, random_state=0)
-
 all_params = {'max_depth': [3, 10],
             'learning_rate': [0.1],
             'min_child_weight': [3],
@@ -124,29 +122,21 @@ min_params = None
 for params in tqdm(list(ParameterGrid(all_params))):
 
     list_rmsle_score = []
-    print(X_train.shape, y_train.shape)
-    for train_idx, valid_idx in cv.split(X_train, y_train):
-        trn_x = X_train.iloc[train_idx, :]
-        val_x = X_train.iloc[valid_idx, :]
 
-        trn_y = y_train[train_idx]
-        val_y = y_train[valid_idx]
+    dev_X, val_X, dev_y, val_y = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
 
-        clf = xgb.sklearn.XGBRegressor(**params)
-        clf.fit(trn_x,
-                trn_y,
-                eval_set=[(val_x, val_y)],
-                early_stopping_rounds=100,
-                eval_metric='rmse'
-                )
+    clf = xgb.sklearn.XGBRegressor(**params)
+    clf.fit(dev_X,
+            dev_y,
+            eval_set=[(val_x, val_y)],
+            early_stopping_rounds=100,
+            eval_metric='rmse'
+            )
 
-        pred = clf.predict(val_x, ntree_limit=clf.best_ntree_limit)[:, 1]
-        sc_rmsle = rmsle(val_y, pred)
+    pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)[:, 1]
+    sc_rmsle = rmsle(val_y, pred)
 
-        list_rmsle_score.append(sc_rmsle)
-        break
-
-    sc_rmsle = np.mean(list_rmsle_score)
+    list_rmsle_score.append(sc_rmsle)
 
     if min_score > sc_rmsle:
         print("min_score:{}".format(sc_rmsle))
@@ -155,7 +145,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
 
 clf = xgb.sklearn.XGBRegressor(**min_params)
 clf.fit(X_train, y_train)
-pred = clf.predict(val_x, ntree_limit=clf.best_ntree_limit)[:, 1]
+pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)[:, 1]
 
 # submission dataset
 sub = pd.read_csv('../input/sample_submission.csv')
