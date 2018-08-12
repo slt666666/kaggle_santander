@@ -53,7 +53,7 @@ def duplicate_columns(frame):
 	dups = []
 
 	for t, v, in groups.items():
-		
+
 		cs = frame[v].columns
 		vs = frame[v]
 		lcs = len(cs)
@@ -104,44 +104,44 @@ X_test = test_df.drop(["ID"], axis=1)
 
 dev_X, val_X, dev_y, val_y = train_test_split(X_train, y_train, test_size = 0.2, random_state = 42)
 
-# LightGBM
-def run_lgb(train_X, train_y, val_X, val_y, test_X):
-	params = {
-		"objective": "regression",
-		"metric": "rmse",
-		"num_leaves": 40,
-		"learning_rate": 0.005,
-		"bagging_fraction": 0.6,
-		"feature_fraction": 0.6,
-		"bagging_freq": 6,
-		"bagging_seed": 42,
-		"verbosity": -1,
-		"seed": 42
-		}
-
-	lgtrain = lgb.Dataset(train_X, label=train_y)
-	lgval = lgb.Dataset(val_X, label=val_y)
-	evals_result = {}
-	model = lgb.train(params, lgtrain, 5000,
-			valid_sets=[lgtrain, lgval],
-			early_stopping_rounds=100,
-			verbose_eval=150,
-			evals_result=evals_result)
-
-	pred_test_y = np.expm1(model.predict(test_X, num_iteration=model.best_iteration))
-	return pred_test_y, model, evals_result
-
-# Training LGB
-pred_test, model, evals_result = run_lgb(dev_X, dev_y, val_X, val_y, X_test)
-print("LightGBM Training Completed...")
-
-# feature importance
-print("Feature importance...")
-gain = model.feature_importance('gain')
-featureimp = pd.DataFrame({'feature':model.feature_name(),
-			'split':model.feature_importance('split'),
-			'gain':100 * gain / gain.sum()}).sort_values('gain', ascending=False)
-print(featureimp[:50])
+# # LightGBM
+# def run_lgb(train_X, train_y, val_X, val_y, test_X):
+# 	params = {
+# 		"objective": "regression",
+# 		"metric": "rmse",
+# 		"num_leaves": 40,
+# 		"learning_rate": 0.005,
+# 		"bagging_fraction": 0.6,
+# 		"feature_fraction": 0.6,
+# 		"bagging_freq": 6,
+# 		"bagging_seed": 42,
+# 		"verbosity": -1,
+# 		"seed": 42
+# 		}
+#
+# 	lgtrain = lgb.Dataset(train_X, label=train_y)
+# 	lgval = lgb.Dataset(val_X, label=val_y)
+# 	evals_result = {}
+# 	model = lgb.train(params, lgtrain, 5000,
+# 			valid_sets=[lgtrain, lgval],
+# 			early_stopping_rounds=100,
+# 			verbose_eval=150,
+# 			evals_result=evals_result)
+#
+# 	pred_test_y = np.expm1(model.predict(test_X, num_iteration=model.best_iteration))
+# 	return pred_test_y, model, evals_result
+#
+# # Training LGB
+# pred_test, model, evals_result = run_lgb(dev_X, dev_y, val_X, val_y, X_test)
+# print("LightGBM Training Completed...")
+#
+# # feature importance
+# print("Feature importance...")
+# gain = model.feature_importance('gain')
+# featureimp = pd.DataFrame({'feature':model.feature_name(),
+# 			'split':model.feature_importance('split'),
+# 			'gain':100 * gain / gain.sum()}).sort_values('gain', ascending=False)
+# print(featureimp[:50])
 
 # XGB modeling
 def run_xgb(train_X, train_y, val_x, val_y, test_X):
@@ -160,7 +160,7 @@ def run_xgb(train_X, train_y, val_x, val_y, test_X):
 
 	watchlist = [(tr_data, 'train'), (va_data, 'valid')]
 
-	model_xgb = xgb.train(params, tr_data, 3000, watchlist, maximize=False, early_stopping_rounds = 100, verbose_eval=100)
+	model_xgb = xgb.train(params, tr_data, 5000, watchlist, maximize=False, early_stopping_rounds = 100, verbose_eval=100)
 	dtest = xgb.DMatrix(test_X)
 	xgb_pred_y = np.expm1(model_xgb.predict(dtest, ntree_limit=model_xgb.best_ntree_limit))
 
@@ -170,38 +170,38 @@ def run_xgb(train_X, train_y, val_x, val_y, test_X):
 pred_test_xgb, model_xgb = run_xgb(dev_X, dev_y, val_X, val_y, X_test)
 print("XGB Training Completed...")
 
-# Catboost
-cb_model = CatBoostRegressor(iterations=500,
-			learning_rate=0.05,
-			depth=10,
-			eval_metric='RMSE',
-			random_seed=42,
-			bagging_temperature=0.2,
-			od_type='Iter',
-			metric_period=50,
-			od_wait=20)
-
-cb_model.fit(dev_X, dev_y,
-		eval_set=(val_X, val_y),
-		use_best_model=True,
-		verbose=True)
-
-pred_test_cat = np.expm1(cb_model.predict(X_test))
+# # Catboost
+# cb_model = CatBoostRegressor(iterations=500,
+# 			learning_rate=0.05,
+# 			depth=10,
+# 			eval_metric='RMSE',
+# 			random_seed=42,
+# 			bagging_temperature=0.2,
+# 			od_type='Iter',
+# 			metric_period=50,
+# 			od_wait=20)
+#
+# cb_model.fit(dev_X, dev_y,
+# 		eval_set=(val_X, val_y),
+# 		use_best_model=True,
+# 		verbose=True)
+#
+# pred_test_cat = np.expm1(cb_model.predict(X_test))
 
 # Combine Predictions
 sub = pd.read_csv('../input/sample_submission.csv')
 
-sub_lgb = pd.DataFrame()
-sub_lgb["target"] = pred_test
-
-sub_xgb = pd.DataFrame()
-sub_xgb["target"] = pred_test_xgb
-
-sub_cat = pd.DataFrame()
-sub_cat["target"] = pred_test_cat
-
-sub["target"] = (sub_lgb["target"] * 0.5 + sub_xgb["target"] * 0.3 + sub_cat["target"] * 0.2)
+# sub_lgb = pd.DataFrame()
+# sub_lgb["target"] = pred_test
+#
+# sub_xgb = pd.DataFrame()
+# sub_xgb["target"] = pred_test_xgb
+#
+# sub_cat = pd.DataFrame()
+# sub_cat["target"] = pred_test_cat
+#
+# sub["target"] = (sub_lgb["target"] * 0.5 + sub_xgb["target"] * 0.3 + sub_cat["target"] * 0.2)
+sub["target"] = sub_xgb["target"]
 
 print(sub.head())
 sub.to_csv('sub_lgb_xgb_cat.csv', index=False)
-
