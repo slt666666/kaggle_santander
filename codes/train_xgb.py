@@ -128,7 +128,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
     clf = xgb.sklearn.XGBRegressor(**params)
     clf.fit(dev_X,
             dev_y,
-            eval_set=[(val_x, val_y)],
+            eval_set=[(val_X, val_y)],
             early_stopping_rounds=100,
             eval_metric='rmse'
             )
