@@ -128,9 +128,18 @@ def run_lgb(train_X, train_y, val_X, val_y, test_X):
 			verbose_eval=150,
 			evals_result=evals_result)
 
-	pred_test_y = np.expm1(model.predict(test_X, num_iteration=model.best.iteration))
+	pred_test_y = np.expm1(model.predict(test_X, num_iteration=model.best_iteration))
 	return pred_test_y, model, evals_result
 
 # Training LGB
 pred_test, model, evals_result = run_lgb(dev_X, dev_y, val_X, val_y, X_test)
 print("LightGBM Training Completed...")
+
+# feature importance
+print("Feature importance...")
+gain = model.feature_importance('gain')
+featureimp = pd.Dataframe({'feature':model.feature_name(),
+			'split':model.feature_importance('split'),
+			'gain':100 * gain / gain.sum()}).sort_values('gain', ascending=False)
+print(featureimp[:50])
+
