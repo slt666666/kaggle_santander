@@ -28,8 +28,8 @@ if (train_df.columns[train_df.isnull().sum() != 0].size):
 
 print("Total Test Features with NaN Values = " + str(test_df.columns[test_df.isnull().sum() != 0].size))
 if (test_df.columns[test_df.isnull().sum() != 0].size):
-        print("Features with NaN => {}".format(list(test_df.columns[test_df.isnull().sum() != 0])))
-        test_df[test_df.columns[test_df.isnull().sum() != 0]].isnull().sum().sort_values(ascending = False)
+    print("Features with NaN => {}".format(list(test_df.columns[test_df.isnull().sum() != 0])))
+    test_df[test_df.columns[test_df.isnull().sum() != 0]].isnull().sum().sort_values(ascending = False)
 
 # check and remove constant columns
 colsToRemove = []
