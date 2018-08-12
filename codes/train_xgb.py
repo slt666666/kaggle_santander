@@ -133,7 +133,8 @@ for params in tqdm(list(ParameterGrid(all_params))):
             eval_metric='rmse'
             )
 
-    pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)[:, 1]
+    pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)
+    print(pred.shape)
     sc_rmsle = rmsle(val_y, pred)
 
     list_rmsle_score.append(sc_rmsle)
