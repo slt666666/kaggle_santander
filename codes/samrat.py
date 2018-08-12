@@ -160,9 +160,9 @@ def run_xgb(train_X, train_y, val_x, val_y, test_X):
 
 	watchlist = [(tr_data, 'train'), (va_data, 'valid')]
 
-	model_xgb = xgb.train(params, tr_data, 2000, watchlist, maximize=False, early_stopping_rounds = 100, verbose_eval=100)
+	model_xgb = xgb.train(params, tr_data, 3000, watchlist, maximize=False, early_stopping_rounds = 100, verbose_eval=100)
 	dtest = xgb.DMatrix(test_X)
-	xgb_pred_y = np.expm1(model_xgb.prediction(dtest, ntree_limit=model_xgb.best_ntree_limit))
+	xgb_pred_y = np.expm1(model_xgb.predict(dtest, ntree_limit=model_xgb.best_ntree_limit))
 
 	return xgb_pred_y, model_xgb
 
@@ -171,17 +171,17 @@ pred_test_xgb, model_xgb = run_xgb(dev_X, dev_y, val_X, val_y, X_test)
 print("XGB Training Completed...")
 
 # Catboost
-cd_model = CatBoostRegressor(iterations=500,
+cb_model = CatBoostRegressor(iterations=500,
 			learning_rate=0.05,
 			depth=10,
-			eval_metrics='RMSE',
+			eval_metric='RMSE',
 			random_seed=42,
 			bagging_temperature=0.2,
 			od_type='Iter',
 			metric_period=50,
 			od_wait=20)
 
-cd_model.fit(dev_X, dev_y,
+cb_model.fit(dev_X, dev_y,
 		eval_set=(val_X, val_y),
 		use_best_model=True,
 		verbose=True)
