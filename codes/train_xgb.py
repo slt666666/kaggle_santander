@@ -2,11 +2,11 @@ import numpy as np
 import pandas as pd
 import gc
 import math
-import tqdm
+from tqdm import tqdm
 
-# from sklearn import model_selection
+from sklearn import model_selection
 from sklearn.model_selection import ParameterGrid, StratifiedKFold
-# from sklearn.preprocessing import RobustScaler
+from sklearn.preprocessing import RobustScaler
 import xgboost as xgb
 
 import warnings
@@ -124,7 +124,7 @@ min_params = None
 for params in tqdm(list(ParameterGrid(all_params))):
 
     list_rmsle_score = []
-
+    print(X_train, y_train)
     for train_idx, valid_idx in cv.split(X_train, y_train):
         trn_x = X_train.iloc[train_idx, :]
         val_x = X_train.iloc[valid_idx, :]
