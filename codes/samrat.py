@@ -194,8 +194,8 @@ sub = pd.read_csv('../input/sample_submission.csv')
 # sub_lgb = pd.DataFrame()
 # sub_lgb["target"] = pred_test
 #
-# sub_xgb = pd.DataFrame()
-# sub_xgb["target"] = pred_test_xgb
+sub_xgb = pd.DataFrame()
+sub_xgb["target"] = pred_test_xgb
 #
 # sub_cat = pd.DataFrame()
 # sub_cat["target"] = pred_test_cat
