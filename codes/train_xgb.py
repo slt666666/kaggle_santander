@@ -124,7 +124,7 @@ min_params = None
 for params in tqdm(list(ParameterGrid(all_params))):
 
     list_rmsle_score = []
-    print(X_train, y_train)
+    print(X_train.shape, y_train.shape)
     for train_idx, valid_idx in cv.split(X_train, y_train):
         trn_x = X_train.iloc[train_idx, :]
         val_x = X_train.iloc[valid_idx, :]
