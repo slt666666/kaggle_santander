@@ -15,7 +15,6 @@ warnings.filterwarnings('ignore')
 
 # A function to calculate Root Mean Squared Logarithmic Error (RMSLE)
 def rmsle(y_pred, y):
-    assert y.shape[0] == y_pred.shape[0]
     terms_to_sum = [(math.log(y_pred[i] + 1) - math.log(y[i] + 1)) ** 2.0 for i, pred in enumerate(y_pred)]
     return (sum(terms_to_sum) * (1.0 / len(y))) ** 0.5
 
@@ -51,28 +50,30 @@ print("Removed '{}' Constant Columns\n".format(len(colsToRemove)))
 # print(colsToRemove)
 
 
-def duplicate_columns(frame):
-    groups = frame.columns.to_series().groupby(frame.dtypes).groups
-    dups = []
+# def duplicate_columns(frame):
+#     groups = frame.columns.to_series().groupby(frame.dtypes).groups
+#     dups = []
+#
+#     for t, v, in groups.items():
+#
+#         cs = frame[v].columns
+#         vs = frame[v]
+#         lcs = len(cs)
+#
+#         for i in range(lcs):
+#             ia = vs.iloc[:, i].values
+#             for j in range(i + 1, lcs):
+#                 ja = vs.iloc[:, j].values
+#                 if np.array_equal(ia, ja):
+#                     dups.append(cs[i])
+#                     break
+#     return dups
+#
+#
+# colsToRemove = duplicate_columns(train_df)
+# print(colsToRemove)
 
-    for t, v, in groups.items():
-
-        cs = frame[v].columns
-        vs = frame[v]
-        lcs = len(cs)
-
-        for i in range(lcs):
-            ia = vs.iloc[:, i].values
-            for j in range(i + 1, lcs):
-                ja = vs.iloc[:, j].values
-                if np.array_equal(ia, ja):
-                    dups.append(cs[i])
-                    break
-    return dups
-
-
-colsToRemove = duplicate_columns(train_df)
-print(colsToRemove)
+colsToRemove = ['34ceb0081', '8d57e2749', '168b3e5bc', 'a765da8bc', 'acc5b709d']
 
 # remove duplicate columns in the training set
 train_df.drop(colsToRemove, axis=1, inplace=True)
@@ -98,8 +99,6 @@ train_df, test_df = drop_sparse(train_df, test_df)
 gc.collect()
 print("Train set size: {}".format(train_df.shape))
 print("Test set size: {}".format(test_df.shape))
-
-print(train_df.head())
 
 # Build Train and Test data
 X_train = train_df.drop(["ID", "target"], axis=1)
