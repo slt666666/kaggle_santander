@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from tqdm import tqdm
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error
 from sklearn.model_selection import KFold
@@ -30,7 +31,7 @@ if __name__ == "__main__":
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
     features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    for _f in features:
+    for _f in tqdm(features):
         score = 0
         for trn_, val_ in fold_idx:
             reg.fit(
@@ -93,7 +94,7 @@ if __name__ == "__main__":
     dtrain.construct()
     oof_preds = np.zeros(data.shape[0])
 
-    for trn_idx, val_idx in folds.split(data):
+    for trn_idx, val_idx in tqdm(folds.split(data)):
         lgb_params = {
             'objective': 'regression',
             'num_leaves': 58,
