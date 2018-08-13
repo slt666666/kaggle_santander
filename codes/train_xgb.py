@@ -153,7 +153,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
 
 clf = xgb.sklearn.XGBRegressor(**min_params)
 clf.fit(X_train, y_train)
-pred = clf.predict(X_test, ntree_limit=clf.best_ntree_limit)
+pred = clf.predict(X_test)
 print(pred)
 
 # submission dataset
