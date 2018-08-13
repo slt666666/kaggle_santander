@@ -9,8 +9,6 @@ from sklearn.model_selection import ParameterGrid, train_test_split
 from sklearn.preprocessing import RobustScaler
 import xgboost as xgb
 
-from logging import StreamHandler, DEBUG, Formatter, FileHandler, getLogger
-
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -101,13 +99,14 @@ gc.collect()
 print("Train set size: {}".format(train_df.shape))
 print("Test set size: {}".format(test_df.shape))
 
+print(train_df.head())
+
 # Build Train and Test data
 X_train = train_df.drop(["ID", "target"], axis=1)
-X_train = X_train.T
+
 y_train = np.log1p(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
-X_test = X_test.T
 
 all_params = {'max_depth': [3, 10],
             'learning_rate': [0.1],
