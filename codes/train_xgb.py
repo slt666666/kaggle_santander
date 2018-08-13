@@ -153,7 +153,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
 
 clf = xgb.sklearn.XGBRegressor(**min_params)
 clf.fit(X_train, y_train)
-pred = np.expm(clf.predict(X_test))
+pred = np.expm1(clf.predict(X_test))
 
 # submission dataset
 sub = pd.read_csv('../input/sample_submission.csv')
