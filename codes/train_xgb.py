@@ -14,7 +14,13 @@ warnings.filterwarnings('ignore')
 
 
 # A function to calculate Root Mean Squared Logarithmic Error (RMSLE)
-def rmsle(predictions, dmat):
+def rmsle(y_pred, y):
+    assert y.shape[0] == y_pred.shape[0]
+    terms_to_sum = [(math.log(y_pred[i] + 1) - math.log(y[i] + 1)) ** 2.0 for i, pred in enumerate(y_pred)]
+    return (sum(terms_to_sum) * (1.0 / len(y))) ** 0.5
+
+
+def rmsle_xgb(predictions, dmat):
     labels = dmat.get_label()
     diffs = np.log(predictions + 1) - np.log(labels + 1)
     squared_diffs = np.square(diffs)
@@ -126,8 +132,6 @@ min_params = None
 
 for params in tqdm(list(ParameterGrid(all_params))):
 
-    list_rmsle_score = []
-
     dev_X, val_X, dev_y, val_y = train_test_split(X_train, y_train, test_size=0.2, random_state=42)
 
     clf = xgb.sklearn.XGBRegressor(**params)
@@ -135,14 +139,12 @@ for params in tqdm(list(ParameterGrid(all_params))):
             dev_y,
             eval_set=[(val_X, val_y)],
             early_stopping_rounds=100,
-            eval_metric=rmsle
+            eval_metric=rmsle_xgb
             )
 
     pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)
     print(pred.shape)
     sc_rmsle = rmsle(pred, val_y)
-
-    list_rmsle_score.append(sc_rmsle)
 
     if min_score > sc_rmsle:
         print("min_score:{}".format(sc_rmsle))
