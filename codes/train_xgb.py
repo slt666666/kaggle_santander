@@ -14,11 +14,12 @@ warnings.filterwarnings('ignore')
 
 
 # A function to calculate Root Mean Squared Logarithmic Error (RMSLE)
-def rmsle(y_pred, y):
-    print(y_pred)
-    print(y)
-    terms_to_sum = [(math.log(y_pred[i] + 1) - math.log(y[i] + 1)) ** 2.0 for i, pred in enumerate(y_pred)]
-    return (sum(terms_to_sum) * (1.0 / len(y))) ** 0.5
+def rmsle(predictions, dmat):
+    labels = dmat.get_label()
+    diffs = np.log(predictions + 1) - np.log(labels + 1)
+    squared_diffs = np.square(diffs)
+    avg = np.mean(squared_diffs)
+    return ('RMSLE', np.sqrt(avg))
 
 
 train_df = pd.read_csv('../input/train.csv')
