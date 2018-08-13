@@ -112,7 +112,7 @@ print("Test set size: {}".format(test_df.shape))
 # Build Train and Test data
 X_train = train_df.drop(["ID", "target"], axis=1)
 
-y_train = np.log1p(train_df["target"].values)
+y_train = np.array(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
 
