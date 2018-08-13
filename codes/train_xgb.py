@@ -116,14 +116,15 @@ y_train = np.log1p(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
 
-all_params = {'max_depth': [3, 10],
+all_params = {'max_depth': [10],  # [3, 10]
             'learning_rate': [0.1],
             'min_child_weight': [3],
             'n_estimators': [10000],
-            'colsample_bytree': [0.6, 0.8],
-            'colsample_bylevel': [0.6, 0.8],
+            'colsample_bytree': [0.8],  # [0.6, 0.8]
+            'colsample_bylevel': [0.8],  # [0.6, 0.8]
             'reg_alpha': [0.1],
             'max_delta_step': [0.1],
+            'n_jobs': [-1],
             'seed': [0],
             }
 
@@ -143,7 +144,6 @@ for params in tqdm(list(ParameterGrid(all_params))):
             )
 
     pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)
-    print(pred.shape)
     sc_rmsle = rmsle(pred, val_y)
 
     if min_score > sc_rmsle:
@@ -153,7 +153,8 @@ for params in tqdm(list(ParameterGrid(all_params))):
 
 clf = xgb.sklearn.XGBRegressor(**min_params)
 clf.fit(X_train, y_train)
-pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)[:, 1]
+pred = clf.predict(X_test, ntree_limit=clf.best_ntree_limit)
+print(pred)
 
 # submission dataset
 sub = pd.read_csv('../input/sample_submission.csv')
