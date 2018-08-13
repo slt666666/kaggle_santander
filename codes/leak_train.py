@@ -57,7 +57,7 @@ if __name__ == "__main__":
     test = pd.read_csv('../input/test.csv')
 
     # add leak to test
-    tst_leak = pd.read_csv('../input/breaking-lb-fresh-start-with-lag-selection/test_leak.csv')
+    tst_leak = pd.read_csv('../input/test_leak.csv')
     test['leak'] = tst_leak['compiled_leak']
     test['log_leak'] = np.log1p(tst_leak['compiled_leak'])
 
