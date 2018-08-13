@@ -129,6 +129,9 @@ if __name__ == "__main__":
     data['predictions'] = oof_preds
     data.loc[data['leak'].notnull(), 'predictions'] = np.log1p(data.loc[data['leak'].notnull(), 'leak'])
 
+    print('OOF SCORE : %9.6f' % (mean_squared_error(target, oof_preds) ** .5))
+    print('OOF SCORE with LEAK : %9.6f' % (mean_squared_error(target, data['predictions']) ** .5))
+
     test['target'] = np.expm1(test['target'])
     test.loc[test['leak'].notnull(), 'target'] = test.loc[test['leak'].notnull(), 'leak']
     test[['ID', 'target']].to_csv('leaky_submission.csv', index=False, float_format='%.2f')
