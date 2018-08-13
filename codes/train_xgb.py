@@ -112,7 +112,7 @@ print("Test set size: {}".format(test_df.shape))
 # Build Train and Test data
 X_train = train_df.drop(["ID", "target"], axis=1)
 
-y_train = np.array(train_df["target"].values)
+y_train = np.log1p(train_df["target"].values)
 
 X_test = test_df.drop(["ID"], axis=1)
 
@@ -140,7 +140,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
             dev_y,
             eval_set=[(val_X, val_y)],
             early_stopping_rounds=100,
-            eval_metric=rmsle_xgb
+            eval_metric='rmse'
             )
 
     pred = clf.predict(val_X, ntree_limit=clf.best_ntree_limit)
@@ -153,8 +153,7 @@ for params in tqdm(list(ParameterGrid(all_params))):
 
 clf = xgb.sklearn.XGBRegressor(**min_params)
 clf.fit(X_train, y_train)
-pred = clf.predict(X_test)
-print(pred)
+pred = np.expm(clf.predict(X_test))
 
 # submission dataset
 sub = pd.read_csv('../input/sample_submission.csv')
