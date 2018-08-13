@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import multiprocessing as mp
 from tqdm import tqdm
 from xgboost import XGBRegressor
 from sklearn.metrics import mean_squared_error
@@ -10,6 +11,20 @@ import lightgbm as lgb
 # Feature Scoring using XGBoost with the leak feature
 def rmse(y_true, y_pred):
     return mean_squared_error(y_true, y_pred) ** .5
+
+
+def feature_check(_f):
+    score = 0
+    for trn_, val_ in fold_idx:
+        reg.fit(
+            data[['log_leak', _f]].iloc[trn_], target.iloc[trn_],
+            eval_set=[(data[['log_leak', _f]].iloc[val_], target.iloc[val_])],
+            eval_metric='rmse',
+            early_stopping_rounds=50,
+            verbose=False
+        )
+        score += rmse(target.iloc[val_], reg.predict(data[['log_leak', _f]].iloc[val_], ntree_limit=reg.best_ntree_limit)) / folds.n_splits
+    return (_f, score)
 
 
 if __name__ == "__main__":
@@ -31,18 +46,9 @@ if __name__ == "__main__":
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
     features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    for _f in tqdm(features):
-        score = 0
-        for trn_, val_ in fold_idx:
-            reg.fit(
-                data[['log_leak', _f]].iloc[trn_], target.iloc[trn_],
-                eval_set=[(data[['log_leak', _f]].iloc[val_], target.iloc[val_])],
-                eval_metric='rmse',
-                early_stopping_rounds=50,
-                verbose=False
-            )
-            score += rmse(target.iloc[val_], reg.predict(data[['log_leak', _f]].iloc[val_], ntree_limit=reg.best_ntree_limit)) / folds.n_splits
-        scores.append((_f, score))
+    pool = mp.Pool(8)
+    scores = pool.map(feature_check, features)
+    pool.close()
 
     report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
     report['nb_zeros'] = nb_zeros
