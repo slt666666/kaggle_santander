@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # Only use good features, log leak and stats for training
     # features = good_features.tolist()
-    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['f6f15ffa5', '28fbb187a', '8016c4470', '5619c1297', '403b0e1e4', 'f23c83554', '604ac0633', '0bde2a22d', '4e2abc4ad', 'c6776639f', 'eff61d061', 'c5ba68ea4', 'f8d75792f', '5c4bc83b6', '7196ddee8', 'a2378b86a', '24303647f', '3658d3949', 'f66c58ca7', 'bc8aebe8c'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
+    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['f6f15ffa5', '28fbb187a', '8016c4470', '5619c1297', '403b0e1e4', 'f23c83554', '604ac0633', '0bde2a22d', '4e2abc4ad', 'c6776639f', 'eff61d061', 'c5ba68ea4', 'f8d75792f', '5c4bc83b6', '7196ddee8', 'a2378b86a', '24303647f', '3658d3949', 'f66c58ca7', 'bc8aebe8c']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
