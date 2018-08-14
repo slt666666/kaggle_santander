@@ -30,6 +30,12 @@ def feature_check(_f):
 if __name__ == "__main__":
     data = pd.read_csv('../input/train.csv')
     target = np.log1p(data['target'])
+
+    # add train leak
+    leak = pd.read_csv('../input/train_leak.csv')
+    data['leak'] = leak['compiled_leak'].values
+    data['log_leak'] = np.log1p(leak['compiled_leak'].values)
+
     id_list = ['e677c32f6', 'e9830321d', '1e3045c18', '500d02a95', 'e724ee2df',\
        '6aedd2ab2', '92c008ce8', '6fe308206', 'ceaeaab73', '459f7cf2c',\
        'd49a3bd3e', '5244e20bb', 'a69e918f6', '3c50adbbd', 'dfa739303',\
@@ -107,11 +113,6 @@ if __name__ == "__main__":
     for id in id_list:
         data = data[data['ID'] != id]
     data.drop(['ID', 'target'], axis=1, inplace=True)
-
-    # add train leak
-    leak = pd.read_csv('../input/train_leak.csv')
-    data['leak'] = leak['compiled_leak'].values
-    data['log_leak'] = np.log1p(leak['compiled_leak'].values)
 
     reg = XGBRegressor(n_estimators=1000)
     folds = KFold(4, True, 134259)
