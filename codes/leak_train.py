@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     # Only use good features, log leak and stats for training
     features = good_features.tolist()
-    features = features + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
+    features = features + ['f6f15ffa5', '28fbb187a', '8016c4470', '5619c1297', '403b0e1e4', 'f23c83554', '604ac0633', '0bde2a22d', '4e2abc4ad', 'c6776639f', 'eff61d061', 'c5ba68ea4', 'f8d75792f', '5c4bc83b6', '7196ddee8'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
