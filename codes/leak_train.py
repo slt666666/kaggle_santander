@@ -55,8 +55,8 @@ if __name__ == "__main__":
     # report['nunique'] = nb_values
     # report.sort_values(by='rmse', ascending=True, inplace=True)
     # report.to_csv('feature_report.csv', index=True)
-
-    # select some features (threshold is not optimized)
+    #
+    # # select some features (threshold is not optimized)
     # good_features = report.loc[report['rmse'] <= 0.7925].index
     # rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
 
@@ -92,17 +92,10 @@ if __name__ == "__main__":
 
     # Only use good features, log leak and stats for training
     # features = good_features.tolist()
-    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['8d6c2a0b2', 'e90ed19da', 'c377b9acf', '5985f4c31', '3c29aec1e',
-       'ad94b3f11', '78f7fcebd', '8405c17e7', '30cef4483', 'acd155589',
-       '40ad014d1', '4fcb73cb1', '8d57e2749', '7b5650f35', '8cff502b4',
-       '3658d3949', '44b0a78e7', 'e33cc4561', '168b3e5bc', '15d57abf7',
-       'b39f565d4', '5c4bc83b6', 'bba402827', '35dac887f', '60b963f48',
-       '0ba2922a3', '238af49a8', '210f2139a', 'e7150f2ca', '526a2282d',
-       '33ed23348', 'b658cdb8f', 'acc5b709d', 'e32c2263e', 'f8d75792f',
-       '7196ddee8', '1bd1f24bb', '19873fe8a', '81a212800', '82953c4cd',
-       '4a9d3240b', '55155e341', '275c5ddfa', 'd401c2b4a', 'c5ba68ea4',
-       'f333a5f60', 'b4e462a2f', 'ce549c005', '310e1ede9', '99258443a',
-       '98dea9e42', '2e84e09c5'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
+    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a']
+    + ['604ac0633', 'f23c83554', '403b0e1e4', 'c6776639f', '5619c1297', '940c3b22f', '28fbb187a', '8016c4470', 'f6f15ffa5', '7196ddee8', '77c9823f2', 'eff61d061', '6d82c5c16']
+    + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
+    data[['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['604ac0633', 'f23c83554', '403b0e1e4', 'c6776639f', '5619c1297', '940c3b22f', '28fbb187a', '8016c4470', 'f6f15ffa5', '7196ddee8', '77c9823f2', 'eff61d061', '6d82c5c16']] = np.log1p(data[['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['604ac0633', 'f23c83554', '403b0e1e4', 'c6776639f', '5619c1297', '940c3b22f', '28fbb187a', '8016c4470', 'f6f15ffa5', '7196ddee8', '77c9823f2', 'eff61d061', '6d82c5c16']])
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
