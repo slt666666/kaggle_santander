@@ -45,20 +45,20 @@ if __name__ == "__main__":
     nb_values = data.nunique(dropna=False)
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
-    features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    pool = mp.Pool(8)
-    scores = pool.map(feature_check, features)
-    pool.close()
+    # features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
+    # pool = mp.Pool(8)
+    # scores = pool.map(feature_check, features)
+    # pool.close()
 
-    report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
-    report['nb_zeros'] = nb_zeros
-    report['nunique'] = nb_values
-    report.sort_values(by='rmse', ascending=True, inplace=True)
-    report.to_csv('feature_report.csv', index=True)
-
-    # select some features (threshold is not optimized)
-    good_features = report.loc[report['rmse'] <= 0.7925].index
-    rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
+    # report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
+    # report['nb_zeros'] = nb_zeros
+    # report['nunique'] = nb_values
+    # report.sort_values(by='rmse', ascending=True, inplace=True)
+    # report.to_csv('feature_report.csv', index=True)
+    #
+    # # select some features (threshold is not optimized)
+    # good_features = report.loc[report['rmse'] <= 0.7925].index
+    # rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
 
     test = pd.read_csv('../input/test.csv')
 
@@ -91,8 +91,8 @@ if __name__ == "__main__":
     test['the_kur'] = test[features].kurtosis(axis=1)
 
     # Only use good features, log leak and stats for training
-    features = good_features.tolist()
-    features = features + ['604ac0633', 'f23c83554', '403b0e1e4', 'c6776639f', '5619c1297', '940c3b22f', '28fbb187a', '8016c4470', 'f6f15ffa5', '7196ddee8', '77c9823f2', 'eff61d061', '6d82c5c16'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
+    # features = good_features.tolist()
+    features = ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
