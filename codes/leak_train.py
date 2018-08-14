@@ -29,7 +29,6 @@ def feature_check(_f):
 
 if __name__ == "__main__":
     data = pd.read_csv('../input/train.csv')
-    target = np.log1p(data['target'])
 
     # add train leak
     leak = pd.read_csv('../input/train_leak.csv')
@@ -112,6 +111,7 @@ if __name__ == "__main__":
        '8eda8b2e2', '98eb49a01', 'c216db16c']
     for id in id_list:
         data = data[data['ID'] != id]
+    target = np.log1p(data['target'])
     data.drop(['ID', 'target'], axis=1, inplace=True)
 
     reg = XGBRegressor(n_estimators=1000)
