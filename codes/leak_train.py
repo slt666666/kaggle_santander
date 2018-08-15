@@ -63,9 +63,9 @@ if __name__ == "__main__":
     test = pd.read_csv('../input/test.csv')
 
     # add leak to test
-    tst_leak = pd.read_csv('../input/ENS_LEAKS.csv')
-    test['leak'] = tst_leak['target']
-    test['log_leak'] = np.log1p(tst_leak['target'])
+    tst_leak = pd.read_csv('../input/test_leak2.csv')
+    test['leak'] = tst_leak['compiled_leak']
+    test['log_leak'] = np.log1p(tst_leak['compiled_leak'])
 
     # train LightGBM
     folds = KFold(n_splits=5, shuffle=True, random_state=1)
@@ -79,7 +79,6 @@ if __name__ == "__main__":
     data['nb_nans'] = data[features].isnull().sum(axis=1)
     data['the_sum'] = np.log1p(data[features].sum(axis=1))
     data['the_std'] = data[features].std(axis=1)
-    data['the_var'] = data[features].var(axis=1)
     data['the_kur'] = data[features].kurtosis(axis=1)
     data["nz_max"] = np.log1p(data[features].apply(lambda x: x[x!=0].max(), axis=1))
     data["nz_min"] = np.log1p(data[features].apply(lambda x: x[x!=0].min(), axis=1))
@@ -94,7 +93,6 @@ if __name__ == "__main__":
     test['nb_nans'] = test[features].isnull().sum(axis=1)
     test['the_sum'] = np.log1p(test[features].sum(axis=1))
     test['the_std'] = test[features].std(axis=1)
-    test['the_var'] = test[features].var(axis=1)
     test['the_kur'] = test[features].kurtosis(axis=1)
     test["nz_max"] = np.log1p(test[features].apply(lambda x: x[x!=0].max(), axis=1))
     test["nz_min"] = np.log1p(test[features].apply(lambda x: x[x!=0].min(), axis=1))
@@ -104,7 +102,7 @@ if __name__ == "__main__":
 
     # Only use good features, log leak and stats for training
     # features = good_features.tolist()
-    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_var', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
+    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
