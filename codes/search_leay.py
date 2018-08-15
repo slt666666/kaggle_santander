@@ -62,6 +62,7 @@ def compiled_leak_result():
             "% of correct leaks values in train ",
             leaky_value_corrects[-1]
         )
+        print(train_leak["compiled_leak"])
         tmp = train_leak.copy()
         tmp.loc[zeroleak, "compiled_leak"] = tmp.loc[zeroleak, "nonzero_mean"]
         scores.append(np.sqrt(mean_squared_error(y, np.log1p(tmp["compiled_leak"]).fillna(14.49))))
