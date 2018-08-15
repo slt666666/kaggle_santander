@@ -64,8 +64,8 @@ if __name__ == "__main__":
 
     # add leak to test
     tst_leak = pd.read_csv('../input/ENS_LEAKS.csv')
-    test['leak'] = tst_leak['compiled_leak']
-    test['log_leak'] = np.log1p(tst_leak['compiled_leak'])
+    test['leak'] = tst_leak['target']
+    test['log_leak'] = np.log1p(tst_leak['target'])
 
     # train LightGBM
     folds = KFold(n_splits=5, shuffle=True, random_state=1)
