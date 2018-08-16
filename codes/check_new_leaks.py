@@ -28,7 +28,6 @@ def check_base_list(i):
         base = pd.DataFrame([base])
         base = base.apply(tuple, axis=1).to_frame().rename(columns={0: 'key'})
         for j in range(26-k):
-            print("base:{0}..{1}_{2}, rest:{3}_{4}".format(i, 26-k, 41-k, j, j+15))
             # normal
             comp_base = rest_set.iloc[:, j:j+15].apply(tuple, axis=1).to_frame().rename(columns={0: 'key'})
             if pd.merge(comp_base, base, on='key').shape[0] > 0:
