@@ -5,7 +5,6 @@ import gc
 import multiprocessing as mp
 from sklearn import linear_model
 import sklearn
-%matplotlib inline
 
 leak_data = pd.read_csv('../input/test_leak.csv')
 test_data = pd.read_csv('../input/test.csv')
