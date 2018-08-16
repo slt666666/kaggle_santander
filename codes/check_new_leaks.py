@@ -33,7 +33,7 @@ def check_base_list(i):
             if base['key'].values[0] != (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0):
                 if pd.merge(comp_base, base, on='key').shape[0] > 0:
                     with open('check_new_leak.txt','a') as add_i:
-                        add_i.write("{}\n".format(i))
+                        add_i.write("base:{0}..{1}_{2}, rest:{3}_{4}\n".format(i, 26-k, 41-k, j, j+15))
                     print("base:{0}..{1}_{2}, rest:{3}_{4}".format(i, 26-k, 41-k, j, j+15))
     print("check: {} finished".format(i))
 
