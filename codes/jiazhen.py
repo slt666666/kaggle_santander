@@ -102,11 +102,14 @@ colgroups = [
     ['df03d1653', '7fd35c77a', '133e6f674', '643ef6977', '9539d34c8', '9d2835f75', 'acc744336', 'c8a66413e', 'b80f3eab2', '437ff8730', 'e289bbcc3', 'dd48ed481', '90db65912', '9eab942f8', '753e0a307', '5e1085022', 'a4529b4ef', 'c9c6b51aa', '1346d1df0', '0a9735aba', '64226e620', 'de5e74ae7', 'd00f7d768', 'b4e4a184a', 'ef139d7ac', 'a6f5de07f', 'cb9333bd7', '4dfa4bc61', '5089bf842', '6f44294b2', 'ae1bd05ee', 'f807767c5', '067bcb836', 'd1cf68555', 'e5499c39d', '0bb06f4b5', 'b6336ff10', 'a84bafe34', '3e37bffde', '093b92da5'],
     ['2c7e41e16', '5ad1de183', 'd8cc972fe', '5b2471c13', '841704460', '47e969ba0', 'd77583e88', '991bca4be', 'fd6e11a24', 'b5a25e7c9', '61a0acefa', '0e931cdd3', 'd9fa0485a', '614f8e1eb', '1996a153f', '289e5ecc3', 'b7d2baa45', 'ff8561ce9', '601d54a3a', '0fb0d19af', '7ee833549', '05c276b21', '0b26c77a9', 'e8387d928', '8fe3c178c', '678e2d1dd', 'd966ac62c', 'f6c436744', 'e25a65f3d', 'f1b626ac2', 'adf03173b', '57276ea06', '119230239', 'bdbb0cd24', '9282e1543', 'e7eb9a66b', '6dad99586', '4a9abd788', 'e7e41bbde', 'ebe9f985f'],
     ['ca010e4f8', 'a20b1603b', 'd4c72ccf2', 'ad7fbe4b5', 'b0f5ed414', 'f960e93ae', 'a4bbe86e5', 'fe758841a', '4ca7f1312', '9488c30e3', 'e84eed5ae', '54a1765cc', '1c2a63f01', 'd709df8f9', 'b5b797f71', '770bef1c6', '07c9d1f37', 'ff793343c', 'c83ce87d0', '7ba2e35d6', '027e67ec7', '43d99f930', '7eacd712f', 'c90b0b8a7', '939ae6e4a', '1e783ae1e', 'ebaaead05', '7417a6759', '260ff750c', 'ee99f8a68', '78144b68c', 'ce47f8cae', 'fb59499f9', '8ff55a752', '25a2e8b49', 'f9870621e', '27c5d13c9', '8cc831c8b', '2e51c4645', 'b169c8b90'],
+    ['bef84d3ad', '6dd2090e5', 'c2cfc2003', '066566b35', '6b0c3789e', 'e8abdb1f5', '94efcb8df', 'e52260590', 'c0f5174c7', '9c3f5714f', '3027b873d', 'dd51d0fae', 'b0d770462', 'a74f5bb0f', '65f701080', '860bf7c04', '92c5f86c3', '06ec9eb8b', 'a98f8a4ca', '9121c8d1b', '148f36817', '8ab2f764a', '8136ce6e4', '85816f8e3', '2193fe798', '219982fda', '3429017f8', '2de8d5d54', '2cdaafb1a', '66671ad38', 'e0df7616e', 'd9a8918f9', '4a14d4e94', '94ef80b78', 'e70581bed', '151d318cd', 'b3058e9ba', 'c0085a739', '72505ebb2', 'e034322f0'],
+
 
 ]
 
 pattern_1964666 = pd.read_csv('../input/pattern-found/pattern_1964666.66.csv')
 pattern_1166666 = pd.read_csv('../input/pattern-found/pattern_1166666.66.csv')
+pattern_1674000 = pd.read_csv('../input/pattern-found/pattern_1674000.0.csv')
 pattern_812666 = pd.read_csv('../input/pattern-found/pattern_812666.66.csv')
 pattern_2002166 = pd.read_csv('../input/pattern-found/pattern_2002166.66.csv')
 pattern_3160000 = pd.read_csv('../input/pattern-found/pattern_3160000.csv')
@@ -116,6 +119,7 @@ pattern_1964666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_1166666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_812666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_2002166.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
+pattern_1674000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True
 pattern_3160000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_3255483.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 
@@ -124,6 +128,7 @@ pattern_1166666.rename(columns={'8.50E+43': '850027e38'},inplace=True)
 l=[]
 l.append(pattern_1964666.columns.values.tolist())
 l.append(pattern_1166666.columns.values.tolist())
+l.append(pattern_1674000.columns.values.tolist())
 l.append(pattern_812666.columns.values.tolist())
 l.append(pattern_2002166.columns.values.tolist())
 l.append(pattern_3160000.columns.values.tolist())
