@@ -119,7 +119,7 @@ pattern_1964666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_1166666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_812666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_2002166.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
-pattern_1674000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True
+pattern_1674000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_3160000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_3255483.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 
