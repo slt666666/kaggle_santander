@@ -109,7 +109,6 @@ colgroups = [
 
 pattern_1964666 = pd.read_csv('../input/pattern-found/pattern_1964666.66.csv')
 pattern_1166666 = pd.read_csv('../input/pattern-found/pattern_1166666.66.csv')
-pattern_1674000 = pd.read_csv('../input/pattern-found/pattern_1674000.0.csv')
 pattern_812666 = pd.read_csv('../input/pattern-found/pattern_812666.66.csv')
 pattern_2002166 = pd.read_csv('../input/pattern-found/pattern_2002166.66.csv')
 pattern_3160000 = pd.read_csv('../input/pattern-found/pattern_3160000.csv')
@@ -119,7 +118,6 @@ pattern_1964666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_1166666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_812666.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_2002166.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
-pattern_1674000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_3160000.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 pattern_3255483.drop(['Unnamed: 0','value_count'],axis=1,inplace=True)
 
@@ -128,7 +126,6 @@ pattern_1166666.rename(columns={'8.50E+43': '850027e38'},inplace=True)
 l=[]
 l.append(pattern_1964666.columns.values.tolist())
 l.append(pattern_1166666.columns.values.tolist())
-l.append(pattern_1674000.columns.values.tolist())
 l.append(pattern_812666.columns.values.tolist())
 l.append(pattern_2002166.columns.values.tolist())
 l.append(pattern_3160000.columns.values.tolist())
