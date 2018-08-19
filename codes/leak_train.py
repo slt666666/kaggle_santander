@@ -33,7 +33,7 @@ if __name__ == "__main__":
     data.drop(['ID', 'target'], axis=1, inplace=True)
 
     # add train leak
-    leak = pd.read_csv('../input/train_leak.csv')
+    leak = pd.read_csv('../input/train_leak_sp.csv')
     data['leak'] = leak['compiled_leak'].values
     data['log_leak'] = np.log1p(leak['compiled_leak'].values)
 
@@ -45,25 +45,25 @@ if __name__ == "__main__":
     nb_values = data.nunique(dropna=False)
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
-    # features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    # pool = mp.Pool(8)
-    # scores = pool.map(feature_check, features)
-    # pool.close()
-    #
-    # report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
-    # report['nb_zeros'] = nb_zeros
-    # report['nunique'] = nb_values
-    # report.sort_values(by='rmse', ascending=True, inplace=True)
-    # report.to_csv('feature_report.csv', index=True)
-    #
-    # # select some features (threshold is not optimized)
-    # good_features = report.loc[report['rmse'] <= 0.7925].index
-    # rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
+    features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
+    pool = mp.Pool(8)
+    scores = pool.map(feature_check, features)
+    pool.close()
+
+    report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
+    report['nb_zeros'] = nb_zeros
+    report['nunique'] = nb_values
+    report.sort_values(by='rmse', ascending=True, inplace=True)
+    report.to_csv('feature_report.csv', index=True)
+
+    # select some features (threshold is not optimized)
+    good_features = report.loc[report['rmse'] <= 0.7925].index
+    rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
 
     test = pd.read_csv('../input/test.csv')
 
     # add leak to test
-    tst_leak = pd.read_csv('../input/test_leak2.csv')
+    tst_leak = pd.read_csv('../input/test_leak_sp.csv')
     test['leak'] = tst_leak['compiled_leak']
     test['log_leak'] = np.log1p(tst_leak['compiled_leak'])
 
@@ -101,8 +101,9 @@ if __name__ == "__main__":
     test["min"] = np.log1p(test[features].apply(lambda x: x.min(), axis=1))
 
     # Only use good features, log leak and stats for training
-    # features = good_features.tolist()
-    features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
+    features = good_features.tolist()
+    # features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
+    features = features + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
