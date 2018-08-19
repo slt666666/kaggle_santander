@@ -33,7 +33,7 @@ if __name__ == "__main__":
     data.drop(['ID', 'target'], axis=1, inplace=True)
 
     # add train leak
-    leak = pd.read_csv('../input/train_leak_sp.csv')
+    leak = pd.read_csv('../input/train_leak_sp2.csv')
     data['leak'] = leak['compiled_leak'].values
     data['log_leak'] = np.log1p(leak['compiled_leak'].values)
 
@@ -63,7 +63,7 @@ if __name__ == "__main__":
     test = pd.read_csv('../input/test.csv')
 
     # add leak to test
-    tst_leak = pd.read_csv('../input/test_leak_sp.csv')
+    tst_leak = pd.read_csv('../input/test_leak_sp2.csv')
     test['leak'] = tst_leak['compiled_leak']
     test['log_leak'] = np.log1p(tst_leak['compiled_leak'])
 
