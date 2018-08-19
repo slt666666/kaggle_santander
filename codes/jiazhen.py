@@ -218,6 +218,8 @@ def rewrite_compiled_leak(leak_df, lag):
 
 leaky_cols = [c for c in train_leak.columns if 'leaked_target_' in c]
 train_leak = rewrite_compiled_leak(train_leak, best_lag)
+train_res = train_leak[leaky_cols+['compiled_leak']].replace(0.0, np.nan)
+train_res.to_csv('train_leak.csv', index=False)
 
 def compiled_leak_result_test(max_nlags):
     test_leak = test[["ID", "target"] + cols]
