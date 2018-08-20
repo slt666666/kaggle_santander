@@ -57,8 +57,8 @@ if __name__ == "__main__":
     report.to_csv('feature_report.csv', index=True)
 
     # select some features (threshold is not optimized)
-    good_features = report.loc[report['rmse'] <= 0.7925].index
-    rmses = report.loc[report['rmse'] <= 0.7925, 'rmse'].values
+    good_features = report.loc[report['rmse'] <= 0.625].index
+    rmses = report.loc[report['rmse'] <= 0.625, 'rmse'].values
 
     test = pd.read_csv('../input/test.csv')
 
