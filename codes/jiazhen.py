@@ -105,7 +105,9 @@ colgroups = [
     ['bef84d3ad', '6dd2090e5', 'c2cfc2003', '066566b35', '6b0c3789e', 'e8abdb1f5', '94efcb8df', 'e52260590', 'c0f5174c7', '9c3f5714f', '3027b873d', 'dd51d0fae', 'b0d770462', 'a74f5bb0f', '65f701080', '860bf7c04', '92c5f86c3', '06ec9eb8b', 'a98f8a4ca', '9121c8d1b', '148f36817', '8ab2f764a', '8136ce6e4', '85816f8e3', '2193fe798', '219982fda', '3429017f8', '2de8d5d54', '2cdaafb1a', '66671ad38', 'e0df7616e', 'd9a8918f9', '4a14d4e94', '94ef80b78', 'e70581bed', '151d318cd', 'b3058e9ba', 'c0085a739', '72505ebb2', 'e034322f0'],
     ['f0317ca4f', '402b0d650', '7e78d546b', '2ad744c57', '47abb3cb4', '71ac2b961', '5b8c88c94', '293e2698e', '4bdeca0d2', '2ef8b7f4f', 'c380056bb', '2488e17f5', '20442bac4', '8e8736fc8', '8a4c53d3e', '62c547c8e', '86f13324d', 'da52febdb', '64e38e7a2', 'b0310a768', '0d866c3d7', '34a2f580b', '24bcc2f15', 'e1e8947d8', '05f11f48f', '8c8616b62', '79e0c374a', 'ad1466df8', 'f642213a6', 'f8405f8b9', '1ae0db9d5', '9dbb6b717', '0f7ae26ce', '81ec47b4c', 'ad4e33a4c', 'a78f85d49', '8de6fcbf1', '3ecc09859', 'd2ef684ed', '9e39c29d0'],
     ["18cad608c", "05f1b68b8", "9e0c57b34", "414b74eaa", "3b6f67b0e", "372daeab0", "ec827621a", "44d132265", "850d3a6f5", "440d789c5", "e9c45d66f", '615cc4c17', 'ca04a07ca', '4685cc47b', '6cf9184bb', '3dc46e323', '0106dd950', '3855aef1e', 'c9eda7d9c', 'ac308c9a3', '964cd68bc', 'f23b7530c', '7250feb72', '6809065b9', 'c7fd9abc6', '06a1c3b47', '39896d3dd', '10f17bd3e', '6984f4045', 'ed8ff54b5', '42b407f0d', '5509e2e98', 'c593d73e8', 'd3245937e', 'cbeddb751', '0f81cc1d2', '22b3971f5', 'ff3ebf76b', '76a75bd91', '258412544'],
-
+    ['20868afc1', 'a46587cda' ,'acdef5318', 'a72fcabd8', '21216a0a8', 'dd16bb1ff', '3b8208d28', 'a8c320153', '4a6f8b2c1', 'ac2392a17', '08565b519', '6035df6d8', '4b2316bd5', 'bc3f77679', '51ebff825', '43727fb35', 'c0d363088', 'fd1187d68', '207871d87', '7e0fd6d92', 'f4e243e21', '037a54e89', 'cfa24e4be', 'd7f1f9e52', '6760927a0', '0d8f892fe', '09e395f05', 'bcc18dd40', '0f5fb7fe7', 'f10717d56', '717039eef', '41fb39de4', '965fa6747', '75e55b7a9', 'ff08cfbbe', '9e88cfd02', 'df3ac443c', '7acda93e6', '62e587225'],
+    ['c38ca8ae3', '810a254cf', 'e838549ac', '5341a81d1', 'edc919c58', '3c2f0f2c5', '2c76aca6a', 'a22d58a16', '9d77330d2', 'f4393161a', 'f1a0b77a5', '9060e5b59', '649ba759c', '536e3198c', 'ad57dea17', '23c3f4cd9', '2f5688490', '4efdce83e', 'e82967f3f', '3fdef7fe4', 'd5fa5ffba', 'f3901acd1', 'b794c5b62', '96e03563a', '354d9a875', '2fff1237e', '90a420609', 'b95a93172', '338f04484', '295de7381', '4b336f62e', '8dc18e7e1', '3072d6ac4', 'd8ac7b733', 'b2f4d49d1', '885cde177'],
+    ['2e7f340f2', '22f95560c', '2a3c59733', 'a1d11c496', '1e403019b', 'e429ad370', 'a165f5761', '6ab79c2fe', 'afac06058', '735ea6729', '95ba53cf8', '9685f5e16', '6879db4be', '227ac0d56', '5da2e6220', 'dc5a8f1d8', '89ca53693', 'dd0491aad', '98d0d2971', "324aaa96f", "3d4a6baed", "2715b2d4a", "b7f26c1f7", "b0385cee8", "007d71f12", "be448d5b9", "69918e0c1", "9d2dea573", "43a1bf3e9", "adc721d55", "db1da2c31", "ec1425047", "cc462dc0b", "b96c4256a", "cb5329038", "3aab2691c", "796855249", "cd41bbc4e"],
 ]
 
 pattern_1964666 = pd.read_csv('../input/pattern-found/pattern_1964666.66.csv')
@@ -215,86 +217,86 @@ result.to_csv('train_leaky_stat.csv', index=False)
 best_score = np.min(result['score'])
 best_lag = np.argmin(result['score'])
 print('best_score', best_score, '\nbest_lag', best_lag)
-
-def rewrite_compiled_leak(leak_df, lag):
-    leak_df["compiled_leak"] = 0
-    for i in range(lag):
-        c = "leaked_target_"+str(i)
-        zeroleak = leak_df["compiled_leak"]==0
-        leak_df.loc[zeroleak, "compiled_leak"] = leak_df.loc[zeroleak, c]
-    return leak_df
-
-leaky_cols = [c for c in train_leak.columns if 'leaked_target_' in c]
-train_leak = rewrite_compiled_leak(train_leak, best_lag)
-train_res = train_leak[leaky_cols+['compiled_leak']].replace(0.0, np.nan)
-train_res.to_csv('train_leak.csv', index=False)
-
-def compiled_leak_result_test(max_nlags):
-    test_leak = test[["ID", "target"] + cols]
-    test_leak["compiled_leak"] = 0
-    test_leak["nonzero_mean"] = test[transact_cols].apply(
-        lambda x: np.expm1(np.log1p(x[x!=0]).mean()), axis=1
-    )
-
-    scores = []
-    leaky_value_counts = []
-    # leaky_value_corrects = []
-    leaky_cols = []
-
-    for i in range(max_nlags):
-        c = "leaked_target_"+str(i)
-
-        print('Processing lag', i)
-        #test_leak[c] = _get_leak(test_leak, cols, i)
-        test_leak[c] = _get_leak(test, cols,ss, i)
-
-        leaky_cols.append(c)
-        test_leak = test.join(
-            test_leak.set_index("ID")[leaky_cols+["compiled_leak", "nonzero_mean"]],
-            on="ID", how="left"
-        )[["ID", "target"] + cols + leaky_cols+["compiled_leak", "nonzero_mean"]]
-        zeroleak = test_leak["compiled_leak"]==0
-        test_leak.loc[zeroleak, "compiled_leak"] = test_leak.loc[zeroleak, c]
-        leaky_value_counts.append(sum(test_leak["compiled_leak"] > 0))
-        #_correct_counts = sum(train_leak["compiled_leak"]==train_leak["target"])
-        #leaky_value_corrects.append(_correct_counts/leaky_value_counts[-1])
-        print("Leak values found in test", leaky_value_counts[-1])
-        #print(
-        #    "% of correct leaks values in train ",
-        #    leaky_value_corrects[-1]
-        #)
-        #tmp = test_leak.copy()
-        #tmp.loc[zeroleak, "compiled_leak"] = tmp.loc[zeroleak, "nonzero_mean"]
-        #scores.append(np.sqrt(mean_squared_error(y, np.log1p(tmp["compiled_leak"]).fillna(14.49))))
-        #print(
-        #    'Score (filled with nonzero mean)',
-        #    scores[-1]
-        #)
-    result = dict(
-        # score=scores,
-        leaky_count=leaky_value_counts,
-        # leaky_correct=leaky_value_corrects,
-    )
-    return test_leak, result
-
-test_leak, test_result = compiled_leak_result_test(max_nlags=38)
-
-test_result = pd.DataFrame.from_dict(test_result, orient='columns')
-
-test_result.to_csv('test_leaky_stat.csv', index=False)
-
-best_lag = 37
-
-test_leak = rewrite_compiled_leak(test_leak, best_lag)
-test_leak[['ID']+leaky_cols+['compiled_leak']].head()
-
-test_res = test_leak[leaky_cols+['compiled_leak']].replace(0.0, np.nan)
-test_res.to_csv('test_leak.csv', index=False)
-
-test_leak.loc[test_leak["compiled_leak"]==0, "compiled_leak"] = test_leak.loc[test_leak["compiled_leak"]==0, "nonzero_mean"]
-
-#submission
-sub = test[["ID"]]
-sub["target"] = test_leak["compiled_leak"]
-sub.to_csv(f"baseline_sub_lag_{best_lag}.csv", index=False)
-print(f"baseline_sub_lag_{best_lag}.csv saved")
+#
+# def rewrite_compiled_leak(leak_df, lag):
+#     leak_df["compiled_leak"] = 0
+#     for i in range(lag):
+#         c = "leaked_target_"+str(i)
+#         zeroleak = leak_df["compiled_leak"]==0
+#         leak_df.loc[zeroleak, "compiled_leak"] = leak_df.loc[zeroleak, c]
+#     return leak_df
+#
+# leaky_cols = [c for c in train_leak.columns if 'leaked_target_' in c]
+# train_leak = rewrite_compiled_leak(train_leak, best_lag)
+# train_res = train_leak[leaky_cols+['compiled_leak']].replace(0.0, np.nan)
+# train_res.to_csv('train_leak.csv', index=False)
+#
+# def compiled_leak_result_test(max_nlags):
+#     test_leak = test[["ID", "target"] + cols]
+#     test_leak["compiled_leak"] = 0
+#     test_leak["nonzero_mean"] = test[transact_cols].apply(
+#         lambda x: np.expm1(np.log1p(x[x!=0]).mean()), axis=1
+#     )
+#
+#     scores = []
+#     leaky_value_counts = []
+#     # leaky_value_corrects = []
+#     leaky_cols = []
+#
+#     for i in range(max_nlags):
+#         c = "leaked_target_"+str(i)
+#
+#         print('Processing lag', i)
+#         #test_leak[c] = _get_leak(test_leak, cols, i)
+#         test_leak[c] = _get_leak(test, cols,ss, i)
+#
+#         leaky_cols.append(c)
+#         test_leak = test.join(
+#             test_leak.set_index("ID")[leaky_cols+["compiled_leak", "nonzero_mean"]],
+#             on="ID", how="left"
+#         )[["ID", "target"] + cols + leaky_cols+["compiled_leak", "nonzero_mean"]]
+#         zeroleak = test_leak["compiled_leak"]==0
+#         test_leak.loc[zeroleak, "compiled_leak"] = test_leak.loc[zeroleak, c]
+#         leaky_value_counts.append(sum(test_leak["compiled_leak"] > 0))
+#         #_correct_counts = sum(train_leak["compiled_leak"]==train_leak["target"])
+#         #leaky_value_corrects.append(_correct_counts/leaky_value_counts[-1])
+#         print("Leak values found in test", leaky_value_counts[-1])
+#         #print(
+#         #    "% of correct leaks values in train ",
+#         #    leaky_value_corrects[-1]
+#         #)
+#         #tmp = test_leak.copy()
+#         #tmp.loc[zeroleak, "compiled_leak"] = tmp.loc[zeroleak, "nonzero_mean"]
+#         #scores.append(np.sqrt(mean_squared_error(y, np.log1p(tmp["compiled_leak"]).fillna(14.49))))
+#         #print(
+#         #    'Score (filled with nonzero mean)',
+#         #    scores[-1]
+#         #)
+#     result = dict(
+#         # score=scores,
+#         leaky_count=leaky_value_counts,
+#         # leaky_correct=leaky_value_corrects,
+#     )
+#     return test_leak, result
+#
+# test_leak, test_result = compiled_leak_result_test(max_nlags=38)
+#
+# test_result = pd.DataFrame.from_dict(test_result, orient='columns')
+#
+# test_result.to_csv('test_leaky_stat.csv', index=False)
+#
+# best_lag = 37
+#
+# test_leak = rewrite_compiled_leak(test_leak, best_lag)
+# test_leak[['ID']+leaky_cols+['compiled_leak']].head()
+#
+# test_res = test_leak[leaky_cols+['compiled_leak']].replace(0.0, np.nan)
+# test_res.to_csv('test_leak.csv', index=False)
+#
+# test_leak.loc[test_leak["compiled_leak"]==0, "compiled_leak"] = test_leak.loc[test_leak["compiled_leak"]==0, "nonzero_mean"]
+#
+# #submission
+# sub = test[["ID"]]
+# sub["target"] = test_leak["compiled_leak"]
+# sub.to_csv(f"baseline_sub_lag_{best_lag}.csv", index=False)
+# print(f"baseline_sub_lag_{best_lag}.csv saved")
