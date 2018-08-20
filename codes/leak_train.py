@@ -46,9 +46,9 @@ if __name__ == "__main__":
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
     features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    pool = mp.Pool(8)
-    scores = pool.map(feature_check, features)
-    pool.close()
+    # pool = mp.Pool(8)
+    # scores = pool.map(feature_check, features)
+    # pool.close()
 
     report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
     report['nb_zeros'] = nb_zeros
@@ -101,9 +101,9 @@ if __name__ == "__main__":
     test["min"] = np.log1p(test[features].apply(lambda x: x.min(), axis=1))
 
     # Only use good features, log leak and stats for training
-    features = good_features.tolist()
+    # features = good_features.tolist()
     # features = ['6eef030c1', 'ba42e41fa', '703885424', 'eeb9cd3aa', '3f4a39818', '371da7669', 'b98f3e0d7', 'fc99f9426', '2288333b4', '324921c7b', '66ace2992', '84d9d1228', '491b9ee45', 'de4e75360', '9fd594eec', 'f190486d6', '62e59a501', '20aa07010', 'c47340d97', '1931ccfdd', 'c2dae3a5a', 'e176a204a'] + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
-    features = features + ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
+    features = ['log_leak', 'log_of_mean', 'mean_of_log', 'log_of_median', 'nb_nans', 'the_sum', 'the_std', 'the_kur', 'nz_max', 'nz_min', 'ez', 'max', 'min']
     dtrain = lgb.Dataset(data=data[features],
                          label=target, free_raw_data=False)
     test['target'] = 0
