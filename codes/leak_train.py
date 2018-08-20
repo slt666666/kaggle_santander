@@ -55,7 +55,7 @@ if __name__ == "__main__":
     # report['nunique'] = nb_values
     # report.sort_values(by='rmse', ascending=True, inplace=True)
     # report.to_csv('feature_report.csv', index=True)
-    report = pd.read_csv("../codes/feature_report")
+    report = pd.read_csv("../codes/feature_report.csv")
 
     # select some features (threshold is not optimized)
     good_features = report.loc[report['rmse'] <= 0.625].index
