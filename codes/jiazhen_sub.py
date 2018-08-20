@@ -108,6 +108,7 @@ all_colgroups = [
     ["18cad608c", "05f1b68b8", "9e0c57b34", "414b74eaa", "3b6f67b0e", "372daeab0", "ec827621a", "44d132265", "850d3a6f5", "440d789c5", "e9c45d66f", '615cc4c17', 'ca04a07ca', '4685cc47b', '6cf9184bb', '3dc46e323', '0106dd950', '3855aef1e', 'c9eda7d9c', 'ac308c9a3', '964cd68bc', 'f23b7530c', '7250feb72', '6809065b9', 'c7fd9abc6', '06a1c3b47', '39896d3dd', '10f17bd3e', '6984f4045', 'ed8ff54b5', '42b407f0d', '5509e2e98', 'c593d73e8', 'd3245937e', 'cbeddb751', '0f81cc1d2', '22b3971f5', 'ff3ebf76b', '76a75bd91', '258412544'],
 ]
 
+test_result = []
 for del_i in range(70):
     print("del_i = {}\n".format(del_i))
     tmp = copy.deepcopy(all_colgroups)
@@ -176,7 +177,7 @@ for del_i in range(70):
         leaky_value_corrects = []
         leaky_cols = []
 
-        for i in [36, 37]:
+        for i in range(max_nlags):
             c = "leaked_target_"+str(i)
             print('Processing lag', i)
             #train_leak[c] = _get_leak(train, cols,l, i)
@@ -219,3 +220,7 @@ for del_i in range(70):
     best_score = np.min(result['score'])
     best_lag = np.argmin(result['score'])
     print('best_score', best_score, '\nbest_lag', best_lag)
+
+    print("now result!!!!!")
+    test_result.append([del_i, best_score, best_lag])
+    print(test_result)
