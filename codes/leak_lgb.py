@@ -45,17 +45,16 @@ if __name__ == "__main__":
     nb_values = data.nunique(dropna=False)
     nb_zeros = (data == 0).astype(np.uint8).sum(axis=0)
 
-    # features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
-    # pool = mp.Pool(8)
-    # scores = pool.map(feature_check, features)
-    # pool.close()
+    features = [f for f in data.columns if f not in ['log_leak', 'leak', 'target', 'ID']]
+    pool = mp.Pool(8)
+    scores = pool.map(feature_check, features)
+    pool.close()
 
-    # report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
-    # report['nb_zeros'] = nb_zeros
-    # report['nunique'] = nb_values
-    # report.sort_values(by='rmse', ascending=True, inplace=True)
-    # report.to_csv('feature_report.csv', index=True)
-    report = pd.read_csv("../codes/feature_report.csv")
+    report = pd.DataFrame(scores, columns=['feature', 'rmse']).set_index('feature')
+    report['nb_zeros'] = nb_zeros
+    report['nunique'] = nb_values
+    report.sort_values(by='rmse', ascending=True, inplace=True)
+    report.to_csv('feature_report.csv', index=True)
 
     # select some features (threshold is not optimized)
     good_features = report.loc[report['rmse'] <= 0.625]
